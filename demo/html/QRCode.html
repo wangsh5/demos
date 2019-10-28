@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ </head>
+ <body>
+  <div class="code"></div>
+
+  <script src="http://cdnjs.gtimg.com/cdnjs/libs/jquery/2.1.1-rc2/jquery.min.js"></script>
+  <script src="../js/code.js"></script>
+  <script type="text/javascript">
+	var code='0123456789'
+	var inviteUrl = 'https://www.baidu.com?code='+code;
+	var qrcodeWidth = 100;
+	//生成二维码
+	var qrcode = new QRCode($(".code")[0], {
+		width : qrcodeWidth,//设置宽高
+		height : qrcodeWidth
+	});
+	qrcode.makeCode(inviteUrl);
+  </script>	
+ </body>
+</html>

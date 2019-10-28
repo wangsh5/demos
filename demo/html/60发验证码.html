@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+ </head>
+ <body>
+  <span id="dd" onclick="dd()">点击</span>
+  <script>
+	function dd(tt){
+		var i=60;
+		var timer=setInterval(function(){
+			i--;
+			document.getElementById("dd").innerHTML=i+'s重发';
+			if(i==0){
+				clearInterval(timer);
+				document.getElementById("dd").innerHTML='点击';
+			}
+		},1000)
+	}
+  </script>
+ </body>
+</html>

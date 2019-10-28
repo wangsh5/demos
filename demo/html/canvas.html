@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height">
+    <title>刻度仪表盘</title>
+    <style>::-webkit-scrollbar{display:none;}html,body{overflow:hidden;height:100%;margin:0;}</style>
+</head>
+<body>
+<div id="mountNode"></div>
+<script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+<script>
+  // 构造数据
+  var data1 = [];
+  for (var i = 0; i < 50; i++) {
+    var item = {};
+    item.type = i + '';
+    item.value = 10;
+    data1.push(item);
+  }
+
+  var data2 = [];
+  for (var _i = 0; _i < 50; _i++) {
+    var _item = {};
+    _item.type = _i + '';
+    _item.value = 10;
+    if (_i === 25) {
+      _item.value = 14;
+    }
+    if (_i > 25) {
+      _item.value = 0;
+    }
+    data2.push(_item);
+  }
+
+  var chart = new G2.Chart({
+    container: 'mountNode',
+    forceFit: true,
+    height: 130,
+    padding: 0
+  });
+  chart.scale({
+    type: {
+      range: [0, 1]
+    },
+    value: {
+      sync: true
+    }
+  });
+  chart.legend(false);
+  chart.tooltip(false);
+  var view1 = chart.view();
+  view1.source(data1);
+  view1.axis(false);
+  view1.coord('polar', {
+    startAngle: -9 / 8 * Math.PI,
+    endAngle: 1 / 8 * Math.PI,
+    innerRadius: 0.75,
+    radius: 0.8
+  });
+  view1.interval().position('type*value').color('#CBCBCB').size(2);
+
+  var view2 = chart.view();
+  view2.source(data1, {
+    type: {
+      tickCount: 3
+    }
+  });
+  view2.axis('value', false);
+  view2.axis('type', {
+    grid: null,
+    line: null,
+    tickLine: null,
+    label: {
+      offset: -8,
+      textStyle: {
+        textAlign: 'center',
+        fill: '#ccc',
+        fontSize: 12
+      },
+      formatter: function formatter(val) {
+        if (val === '49') {
+          return 100;
+        }
+
+        return val;
+      }
+    }
+  });
+  view2.coord('polar', {
+    startAngle: -9 / 8 * Math.PI,
+    endAngle: 1 / 8 * Math.PI,
+    innerRadius: 0.95,
+    radius: 0.55
+  });
+  view2.interval().position('type*value').color('#CBCBCB').size(2);
+
+  var view3 = chart.view();
+  view3.source(data2);
+  view3.axis(false);
+  view3.coord('polar', {
+    startAngle: -9 / 8 * Math.PI,
+    endAngle: 1 / 8 * Math.PI,
+    innerRadius: 0.75,
+    radius: 0.8
+  });
+  view3.interval().position('type*value').color('value', '#3023AE-#53A0FD').opacity(1).size(2);
+  view3.guide().text({
+    position: ['50%', '65%'],
+    content: '26°',
+    style: {
+      fill: '#000',
+      fontSize: 21,
+      textAlign: 'center',
+      textBaseline: 'middle'
+    }
+  });
+
+  chart.render();
+</script>
+</body>
+</html>

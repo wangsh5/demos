@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1,user-scalable=no" />
+    <title>地区选择</title>
+    <style>
+		html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,strong,var,fieldset,form,label,dl,dt,dd,cite,input,hr,time,mark,code,figcaption,figure,textarea,h1,h2,h3,h4,h5,h6,p{
+			margin:0;
+			border:0;
+			padding:0;
+			font-style:normal;
+			font-family: "Helvetica Neue" !important;
+		}
+		html,body {
+			-webkit-touch-callout:none;
+			-webkit-text-size-adjust:none;
+			-webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+			-webkit-user-select:none;
+			font-size:16px;
+		}
+		li{list-style:none;}
+		#wrap{padding:0.75rem;}
+		#cityCode{width:80%;height:2rem;line-height:2rem;border:1px solid #999;}
+		.cityName{height:2rem;line-height:2rem;color:#1aa4fc;}
+		/* 插件样式 */
+		.container{
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-flex-flow: column;
+			overflow: hidden;
+			color: #222;
+			background-color: #f8f8f8;
+			z-index: 999999;
+		}
+		.tpList{ padding-left: 0.75rem;background: #fff;overflow-y: auto;height: 100%;-webkit-overflow-scrolling : touch;-webkit-transform: translate3d(0,0,0);}
+		.tpList li{display:flex; display:-webkit-flex;padding-left:0;padding-right:0.75rem;height: 2.75rem;line-height: 2.75rem;border-bottom: 1px solid #e4e4e4;}
+		.itemName{flex:1;}
+		.nav{padding:0.9375rem 0.75rem;background:#eee;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;    border-top: 1px solid #e4e4e4;border-bottom: 1px solid #e4e4e4;}
+		.iconImg {margin-top:1rem;}
+		.closeDiv{position:absolute;font-size:1.2rem;color:#ccc;right: 0.75rem;}
+		.chanageList>em{margin:0 3px;}
+    </style>
+</head>
+<body>
+	<div id="wrap">
+		<p class="cityName"  onclick="showPanel()">选择地点</p>
+		<input type="text" name="cityCode" id="cityCode" value="" readonly/>
+	</div> 
+<script src="../js/jquery-3.1.1.min.js"></script>
+<script src="../js/cityList.js"></script>
+<script src="../js/showPanel.js"></script>
+<script>
+ function showPanel(){
+	$('.cityName').showPanel({
+		data:objList.data,
+		codeName:'cityCode',
+	});
+ }
+	//侧滑js
+	/*var showPanel = function(code,type){
+	    var list=[];//每次需要渲染的数据
+		var allList=[];//所有数据
+		var navArr=[];//面包屑导航数据
+		list=objList.data;
+		allList=list;
+		navArr.push({name:'全部',subDatadicList:allList});
+		templateHtml(navArr,list);
+		bindEven();
+		//模板创建
+		function templateHtml(navArr,list){
+			if($('.container')){
+				$('.container').remove();
+			}
+			var html="<div class='container'>"
+			+"<header class='nav'>";
+			for(var i=0;i<navArr.length;i++){
+				html+="<span class='chanageList' data-index='"+i+"'>"+navArr[i].name+"<em>&gt;</em></span>";
+			}
+			html+="<span class='closeDiv'>&times;</span>"
+			html+="</header>"
+			+"<ul class='tpList'>";
+			for(var j=0;j<list.length;j++){
+				html+="<li>"
+				+"<span class='itemName' data-index='"+j+"'>"+list[j].name+"</span>";
+				if(list[j].subDatadicList&&list[j].subDatadicList.length>0){
+					html+="<img class='iconImg' src='images/choose.png' width='7' height='12'>"
+				}
+				html+="</li>"
+			}
+			html+="</ul></div>";
+			$("body").append(html);
+		}
+		//绑定事件
+		function bindEven(){
+			$('.chanageList').each(function(){
+				$(this).on('click',function(){
+					var navIndex=$(this).attr('data-index');
+					chanageList(navIndex)
+				})
+			});
+			$('.itemName').each(function(){
+				$(this).on('click',function(){
+					var itemIndex=$(this).attr('data-index');
+					getDataById(itemIndex)
+				})
+			});
+			$('.closeDiv').on('click',function(){
+				closeDialog();
+			})
+		}
+		//数据渲染
+		function getDataById(i){
+			if(list[i].subDatadicList&&list[i].subDatadicList.length!=0){
+			    var navList=list[i];
+				list=list[i].subDatadicList;
+				navArr.push(navList);
+				templateHtml(navArr,list);
+				bindEven();
+				addColor();
+			}else{
+			    var selectName='';
+			    $.each(navArr,function(i,v){
+			        if(i>0){
+			            selectName+=v.name+'&nbsp';
+			        }
+			    });
+			    selectName+=list[i].name;
+				$('.'+code).html(selectName).css('color','#222');
+				$('[name="'+type+'"]').val(list[i].code);
+				closeDialog();
+			}
+		}
+		//面包屑导航重新渲染
+		function chanageList(i){
+		    i++;
+		    var howmany=navArr.length-i;
+		    navArr.splice(i,howmany);
+			//console.log(navArr);
+		    list=navArr[i-1].subDatadicList;
+		    templateHtml(navArr,list);
+			bindEven();
+			addColor();
+		}
+		//面包屑导航颜色变化
+		function addColor(){
+		    if(navArr.length>1){
+				var lastNavIndex=navArr.length-1;
+		        $('.chanageList:lt('+lastNavIndex+')').css('color','#1aa4fc');
+		    }
+		}
+		//关闭选择页面
+		function closeDialog(){
+		    navArr=[];
+			list=[];
+			$('.chanageList').off();
+			$('.itemName').off();
+			$('.closeDiv').off();
+			$('.container').fadeOut(function() {
+				$(this).remove();
+			});
+	    }
+	}*/
+</script>	
+</body>
+</html>

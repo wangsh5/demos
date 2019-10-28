@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>darg</title>
+<style type="text/css">
+.login_title { cursor: move; position: absolute; top: 300px; left: 200px; background: #259; height: 60px; width: 500px; }
+</style>
+</head>
+<body>
+<div class="login_title" id="box"></div>
+
+<script type="text/javascript">
+function getByClass (clsName, parent) { var oParent=parent?document.getElementById(parent):document, eles=[], elements=oParent.getElementsByTagName('*'); for (var i = 0, l=elements.length; i<l;
+    i++) { if (elements[i].className==clsName) { eles.push(elements[i]) }
+    }
+return eles; }
+window.onload=drag;
+function drag() { var oTitle=getByClass('login_title')[0]; oTitle.onmousedown=fnDown; }
+function fnDown(event) { event = event || window.event; var oDrag=document.getElementById('box'), disX=event.clientX-oDrag.offsetLeft, disY=event.clientY-oDrag.offsetTop;
+    document.onmousemove=function(event) { event = event || window.event; fnMove(event, disX, disY); }
+    document.onmouseup=function() { document.onmousemove=null; document.onmouseup=null; }
+}
+function fnMove(e, posx, posy) { var oDrag=document.getElementById('box'), l=e.clientX-posx, t=e.clientY-posy, winW=document.documentElement.clientWidth || document.body.clientWidth, winH=document.documentElement.clientHeight || document.body.clientHeight, maxW=winW-oDrag.offsetWidth-10, maxH=winH-oDrag.offsetHeight;
+    if(l<0) { l=0; }
+    else if(l>maxW) { l=maxW; }
+    if(t<0) { t=10; }
+    else if(t>maxH) { t=maxH; }
+oDrag.style.left=l+'px'; oDrag.style.top =t+'px'; }
+</script>
+</body>
+</html>

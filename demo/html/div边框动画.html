@@ -1,0 +1,106 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>简单明了div边框css动画-jq22.com</title>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<style>
+.wrap {
+	width:840px;
+	margin:50px auto;
+	height:300px;
+}
+.wrap a {
+	float:left;
+	width:180px;
+	height:180px;
+	margin:10px;
+	border:2px solid #ccc;
+	position:relative;
+	text-align:center;
+}
+.wrap a .top {
+	display:inline-block;
+	position:absolute;
+	left:-1px;
+	top:-2px;
+	width:0px;
+	height:2px;
+	background:#ff0000;
+	transition:.5s
+}
+.wrap a .right {
+	display:inline-block;
+	position:absolute;
+	right:-1px;
+	bottom:0;
+	width:2px;
+	height:0px;
+	background:#ff0000;
+	transition:.5s
+}
+.wrap a .bottom {
+	display:inline-block;
+	position:absolute;
+	bottom:-1px;
+	right:-1px;
+	width:0px;
+	height:2px;
+	background:#ff0000;
+	transition:.5s
+}
+.wrap a .left {
+	display:inline-block;
+	position:absolute;
+	left:-1px;
+	top:0;
+	width:2px;
+	height:0px;
+	background:#ff0000;
+	transition:.5s
+}
+.wrap a:hover .top,.wrap a:hover .bottom {
+	width:101%;
+	transition:.5s;
+}
+.wrap a:hover .right,.wrap a:hover .left {
+	height:100%;
+	transition:.5s;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <a href="javascript:void(0)">
+		hello 
+        <span class="top"></span>
+        <span class="right"></span>
+        <span class="bottom"></span>
+        <span class="left"></span>
+    </a>
+    <a href="javascript:void(0)">
+        <span class="top"></span>
+        <span class="right"></span>
+        <span class="bottom"></span>
+        <span class="left"></span>
+    </a>
+    <a href="javascript:void(0)">
+        <span class="top"></span>
+        <span class="right"></span>
+        <span class="bottom"></span>
+        <span class="left"></span>
+    </a>
+    <a href="javascript:void(0)">
+        <span class="top"></span>
+        <span class="right"></span>
+        <span class="bottom"></span>
+        <span class="left"></span>
+    </a>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>

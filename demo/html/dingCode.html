@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+
+</head>
+<body>
+    <div class="entry-dingtalk__content" id="dingtalk-login"></div>
+	<script src="../js/jquery-3.1.1.min.js"></script>
+	<script src="https://g.alicdn.com/dingding/dinglogin/0.0.2/ddLogin.js"></script>
+<script>
+
+  $(function(){
+    var redirect_url = 'https://dingtalk.e.ikcrm.com/dingtalk/qrcode';
+    var goto_url = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=dingoaq0jk8nrefjp5jhb0&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=' + redirect_url;
+    var obj = DDLogin({
+      id: "dingtalk-login",
+      "goto": encodeURIComponent(goto_url)
+    });
+
+    var hanndleMessage = function (event) {
+	  var data = event.data || "";
+      var origin = event.origin || ""
+      if (data && data.length > 0 && origin.indexOf('login.dingtalk') > -1 ) {
+        var redirect_uri = encodeURIComponent(redirect_url);
+        window.location.href = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=dingoaq0jk8nrefjp5jhb0&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=' + redirect_uri + '&loginTmpCode=' + data;
+      }
+    };
+    if (typeof window.addEventListener != 'undefined') {
+      window.addEventListener('message', hanndleMessage, false);
+    } else if (typeof window.attachEvent != 'undefined') {
+      window.attachEvent('onmessage', hanndleMessage);
+    }
+  });
+
+</script>
+</body>
+</html>

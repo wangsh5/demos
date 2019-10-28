@@ -1,0 +1,21 @@
+
+word-break:break-all 正如其名字，所有的都换行。毫不留情，一点空隙都不放过。
+word-wrap:break-word 则带有怜悯之心，如果这一行文字有可以换行的点，如空格，或CJK(Chinese/Japanese/Korean)(中文/日文/韩文)之类的，则就不打英文单词或字符的主意了，让这些换行点换行，至于对不对齐，好不好看，则不关心
+white-space:nowrap 文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止。
+
+
+
+超出一行省略号表示
+
+CSS：需要加上宽度(width:100px)、超出隐藏（overflow:hidden;）、强制在同一行显示（white-space: nowrap;）、省略号（text-overflow:ellipsis;）
+
+
+.ellipsis{width: 100px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
+
+
+添加他们对应的元素中的空白
+
+letter-spacing 字母/汉子间隔，
+word-spacing 单词间隔,对中文无效。
+
+text-indent 属性规定文本块中首行文本的缩进

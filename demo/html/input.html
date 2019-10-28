@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>input</title>
+	<script src="http://cdnjs.gtimg.com/cdnjs/libs/jquery/2.1.1-rc2/jquery.min.js"></script>
+</head>
+<body>
+	<p>tax: <input class="class1" type="text" name="tax"></p>
+	<p>price: <input class="class2" type="text" name="price"></p>
+	<p>total: <input class="class3" type="text" name="total"></p>
+	<script type="text/javascript">
+		$(function(){
+			$('body').find('input').bind('input', function(){
+				var tax = Number($.trim($('.class1').val()))
+				var price = Number($.trim($('.class2').val()))
+				$('.class3').val(tax+price)
+			})
+		})
+	</script>
+</body>
+</html>

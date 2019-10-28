@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" id="viewport" content="width=device-width, initial-scale=1">
+    <title>地区选择</title>
+    <style>
+		html,body,header,section,footer,div,ul,ol,li,img,a,span,em,del,legend,center,strong,var,fieldset,form,label,dl,dt,dd,cite,input,hr,time,mark,code,figcaption,figure,textarea,h1,h2,h3,h4,h5,h6,p{
+			margin:0;
+			border:0;
+			padding:0;
+			font-style:normal;
+			font-family: "Helvetica Neue" !important;
+		}
+		html,body {
+			-webkit-touch-callout:none;
+			-webkit-text-size-adjust:none;
+			-webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+			-webkit-user-select:none;
+			font-size:16px;
+		}
+		li{list-style:none;}
+		#wrap{padding:0.75rem;}
+        #selectList{display:none;}
+  		#selectList li{
+			height: 2.75rem;
+			line-height: 2.75rem;
+			border-bottom: 1px solid #e4e4e4;
+		}
+		#selectList li:not(.nav){display:flex; display:-webkit-flex;padding-left:0;padding-right:0.75rem;}
+		.itemName{flex:1;}
+		.tpList>li:nth-child(2) { margin-top: 2.75rem;}
+		.nav{background:#eee;padding-left: 0.75rem;position: fixed; top: 0; left: 0; width: 100%;z-index:100;}
+		.iconImg {margin-top:1rem;}
+		.fr{float:right;}
+		#cityCode{width:80%;height:2rem;line-height:2rem;border:1px solid #999;}
+		.cityName{height:2rem;line-height:2rem;color:#1aa4fc;}
+    </style>
+</head>
+<body>
+	<div id='selectList'></div>
+	<div id="wrap">
+		<p class="cityName"  onclick="showPanel('cityName','cityCode',3)">选择地点</p>
+		<input type="text" name="cityCode" id="cityCode" value="" readonly/>
+	</div> 
+<script src="http://cdnjs.gtimg.com/cdnjs/libs/jquery/2.1.1-rc2/jquery.min.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/cityList.js"></script>
+<!-- 侧滑模板 -->
+<script type="text/html" id='dataList'>
+<ul class="tpList" style="padding-left: 0.75rem;background: #fff;">
+	<li class="nav">
+		<p style="width: 90%;display: inline-block;white-space: nowrap;overflow:hidden;text-overflow:ellipsis; ">
+		{{each nav as value i}}
+			<span onclick="chanageList('{{i}}')">{{value.name}}></span>
+		{{/each}} 
+		</p>
+		<span onclick="closeDialog()" style="position:absolute;font-size:1.5rem;color:#ccc;">&times;</span>
+	</li>
+    {{each list as value i}}
+        <li>
+			<span class="itemName flag" onclick='getDataById("{{i}}")' data-code={{value.code}}>{{value.name}}</span>
+			{{if list[i].subDatadicList&&list[i].subDatadicList.length!=0}}
+				<img class="iconImg fr" src="images/choose.png" width="7" height='12'>
+			{{/if}}
+		</li>
+    {{/each}}
+</ul>
+</script>
+<script>
+	//侧滑js
+	var getDataById,chanageList,closeDialog;
+	function showPanel(code,type,num){
+	    var list=[];
+		var allList=[];
+		var navArr=[];
+		var dataObj={};
+		var chooseName=[];
+		var chooseCode=[];
+		$('#wrap').hide();
+	    $('#selectList').show();
+		list=objList.data;
+		allList=list;
+		navArr.push({name:'全部',subDatadicList:allList});
+		dataObj={list:list,nav:navArr}
+		var html = template('dataList', dataObj);
+		document.getElementById('selectList').innerHTML = html;
+		//数据渲染
+		getDataById=function(i){
+			if(list[i].subDatadicList&&list[i].subDatadicList.length!=0){
+			    var navList=list[i];
+				list=list[i].subDatadicList;
+				dataObj={list:list,nav:navArr};
+				dataObj.nav.push(navList);
+				var html = template('dataList', dataObj);
+				document.getElementById('selectList').innerHTML = html;
+				addColor();
+			}else{
+			    var selectName='';
+			    $.each(navArr,function(i,v){
+			        if(i>0){
+			            selectName+=v.name+'&nbsp';
+			        }
+			    });
+			    selectName+=list[i].name;
+				$('.'+code).html(selectName).css('color','#222');
+				$('[name="'+type+'"]').val(list[i].code);
+				closeDialog();
+			}
+		}
+		//面包屑导航重新渲染
+		chanageList=function(i){
+		    i++;
+		    var howmany=navArr.length-i;
+		    navArr.splice(i,howmany);
+		    list=navArr[i-1].subDatadicList;
+		    dataObj={list:list,nav:navArr}
+		    var html = template('dataList', dataObj);
+			document.getElementById('selectList').innerHTML = html;
+			addColor();
+		}
+		//面包屑导航颜色变化
+		var addColor=function(){
+		    if(navArr.length>1){
+		        $('.nav>p>span').not(':last-child').css('color','#1aa4fc');
+		    }
+		}
+		//关闭选择页面
+		closeDialog=function(){
+		    $('#wrap').show();
+		    $('#selectList').hide();
+		    document.getElementById('selectList').innerHTML = '';
+	    }
+	}
+</script>	
+</body>
+</html>
