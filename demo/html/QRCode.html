@@ -10,7 +10,7 @@
  </head>
  <body>
   <div class="code"></div>
-
+  <script src="https://unpkg.com/ipfs-api/dist/index.js"></script>
   <script src="http://cdnjs.gtimg.com/cdnjs/libs/jquery/2.1.1-rc2/jquery.min.js"></script>
   <script src="../js/code.js"></script>
   <script type="text/javascript">
@@ -23,6 +23,13 @@
 		height : qrcodeWidth
 	});
 	qrcode.makeCode(inviteUrl);
+  $(function(){
+    var ipfs = window.IpfsApi('106.53.114.48', '5001')
+    var buffer = Buffer.from('this is a demo')
+    ipfs.add(buffer)
+        .then( rsp => console.log(rsp[0].hash))
+    .catch(err => console.error(err))
+  })
   </script>	
  </body>
 </html>
